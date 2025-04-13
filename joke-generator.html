@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Joke Generator</title>
+    <style>
+        /* All styles for the joke generator in one place */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #bd5d38;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .joke-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .joke-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .joke-text {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .punchline {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            color: #bd5d38;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .punchline.show {
+            opacity: 1;
+        }
+        
+        button {
+            background-color: #bd5d38;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #a04f2f;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .joke-type {
+            margin-bottom: 1.5rem;
+        }
+        
+        .navigation {
+            margin-top: 2rem;
+        }
+        
+        .navigation a {
+            display: inline-block;
+            text-decoration: none;
+            color: #bd5d38;
+            margin: 0 1rem;
+            font-weight: bold;
+        }
+        
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Car animation */
+        .car-container {
+            position: relative;
+            height: 80px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .car {
+            position: absolute;
+            width: 100px;
+            left: -100px;
+            bottom: 0;
+            animation: drive 5s linear infinite;
+        }
+        
+        @keyframes drive {
+            0% {
+                left: -100px;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .joke-text, .punchline {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Car Joke Generator</h1>
+        
+        <div class="car-container">
+            <div class="car">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="100" height="60" fill="#bd5d38">
+                    <path d="M171.3 96H224v96H111.3l30.4-75.9C146.5 104 158.2 96 171.3 96zM272 192V96h81.2c9.7 0 18.9 4.4 25 12l67.2 84H272zm256.2 1L428.2 68c-18.2-22.8-45.8-36-75-36H171.3c-39.3 0-74.6 23.9-89.1 60.3L40.6 196.4C16.8 205.8 0 228.9 0 256v112c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32v-16h384v16c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V320c17.7 0 32-14.3 32-32v-32c0-35.3-28.7-64-64-64h-5.9zM176.9 192H96l32-80h58.9l-10 80zM128 320c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32zm384-32c0 17.7-14.3 32-32 32s-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="joke-type">
+            <button id="dadJokeBtn">Dad Joke</button>
+            <button id="carJokeBtn">Car Joke</button>
+            <button id="customJokeBtn">Custom Joke</button>
+        </div>
+        
+        <div class="joke-box">
+            <p class="joke-text" id="jokeText">Click a button above to generate a joke!</p>
+            <p class="punchline" id="punchline"></p>
+        </div>
+        
+        <button id="revealBtn" disabled>Reveal Punchline</button>
+        <button id="newJokeBtn">New Joke</button>
+        
+        <div class="navigation">
+            <a href="cars.html">Back to Car Page</a>
+            <a href="index.html">Back to Resume</a>
+        </div>
+    </div>
+
+    <script>
+        // All JavaScript for the joke generator in one place
+        const jokeTextEl = document.getElementById('jokeText');
+        const punchlineEl = document.getElementById('punchline');
+        const revealBtn = document.getElementById('revealBtn');
+        const newJokeBtn = document.getElementById('newJokeBtn');
+        const dadJokeBtn = document.getElementById('dadJokeBtn');
+        const carJokeBtn = document.getElementById('carJokeBtn');
+        const customJokeBtn = document.getElementById('customJokeBtn');
+        
+        // Collection of car-related jokes with setup and punchline
+        const carJokes = [
+            {
+                setup: "Why don't scientists trust atoms?",
+                punchline: "Because they make up everything, even cars!"
+            },
+            {
+                setup: "What kind of car does a sheep drive?",
+                punchline: "A Lamborghini!"
+            },
+            {
+                setup: "What do you call a car that's not yours?",
+                punchline: "Taxi!"
+            },
+            {
+                setup: "Why was the car embarrassed?",
+                punchline: "Because it got caught with its wheels off!"
+            },
+            {
+                setup: "What do you call a frozen car?",
+                punchline: "A Brrrr-gatti!"
+            },
+            {
+                setup: "What did the traffic light say to the car?",
+                punchline: "Don't look, I'm changing!"
+            },
+            {
+                setup: "What's a car's favorite meal?",
+                punchline: "Brake-fast!"
+            },
+            {
+                setup: "How do race car drivers stay cool during a race?",
+                punchline: "They use their race car air conditioning!"
+            },
+            {
+                setup: "What do you call a Ford Fiesta that ran out of gas?",
+                punchline: "A Ford Siesta!"
+            },
+            {
+                setup: "Why did the car go to the doctor?",
+                punchline: "It was having engine troubles and needed a check-up!"
+            }
+        ];
+        
+        // Dad jokes collection
+        const dadJokes = [
+            {
+                setup: "I told my wife she was drawing her eyebrows too high.",
+                punchline: "She looked surprised."
+            },
+            {
+                setup: "Why don't skeletons fight each other?",
+                punchline: "They don't have the guts."
+            },
+            {
+                setup: "Did you hear about the mathematician who's afraid of negative numbers?",
+                punchline: "He'll stop at nothing to avoid them!"
+            },
+            {
+                setup: "Why couldn't the bicycle stand up by itself?",
+                punchline: "It was two tired!"
+            },
+            {
+                setup: "What do you call a fake noodle?",
+                punchline: "An impasta!"
+            },
+            {
+                setup: "How many tickles does it take to make an octopus laugh?",
+                punchline: "Ten-tickles!"
+            },
+            {
+                setup: "What did the ocean say to the beach?",
+                punchline: "Nothing, it just waved!"
+            },
+            {
+                setup: "Why did the scarecrow win an award?",
+                punchline: "Because he was outstanding in his field!"
+            },
+            {
+                setup: "I'm reading a book about anti-gravity.",
+                punchline: "It's impossible to put down!"
+            },
+            {
+                setup: "What did one wall say to the other wall?",
+                punchline: "I'll meet you at the corner!"
+            }
+        ];
+        
+        // Custom jokes that combine cars and programming/web development
+        const customJokes = [
+            {
+                setup: "Why do programmers drive manual cars?",
+                punchline: "Because they prefer to control their own functions!"
+            },
+            {
+                setup: "What do web developers and car mechanics have in common?",
+                punchline: "They both spend hours fixing other people's problems!"
+            },
+            {
+                setup: "Why was the JavaScript developer sad after buying a new car?",
+                punchline: "He couldn't figure out how to handle the events!"
+            },
+            {
+                setup: "What's a web developer's favorite car?",
+                punchline: "A Convertible!"
+            },
+            {
+                setup: "Why don't programmers like to drive sports cars?",
+                punchline: "They're afraid of crashes!"
+            },
+            {
+                setup: "How is debugging like trying to find out why your car won't start?",
+                punchline: "In both cases, you usually end up asking 'why is this even happening?'"
+            },
+            {
+                setup: "Why do CSS developers prefer SUVs?",
+                punchline: "They like the padding and flexible layout!"
+            },
+            {
+                setup: "A car and a computer walk into a bar...",
+                punchline: "The bartender asks, 'What's the difference between you two?' They reply: 'One crashes without warning, the other is a car.'"
+            },
+            {
+                setup: "Why are electric cars like good JavaScript code?",
+                punchline: "They both run cleanly without unnecessary emissions!"
+            },
+            {
+                setup: "What did the HTML say to the car?",
+                punchline: "Nice <body> tag!"
+            }
+        ];
+        
+        let currentJokeType = null;
+        let currentJokes = [];
+        
+        // Function to display a random joke from the selected category
+        function displayJoke(jokeType) {
+            // Reset punchline visibility
+            punchlineEl.classList.remove('show');
+            
+            // Determine which joke collection to use
+            if (jokeType === 'dad') {
+                currentJokes = dadJokes;
+                currentJokeType = 'dad';
+            } else if (jokeType === 'car') {
+                currentJokes = carJokes;
+                currentJokeType = 'car';
+            } else if (jokeType === 'custom') {
+                currentJokes = customJokes;
+                currentJokeType = 'custom';
+            }
+            
+            // Get a random joke from the collection
+            const randomIndex = Math.floor(Math.random() * currentJokes.length);
+            const joke = currentJokes[randomIndex];
+            
+            // Update the joke text and punchline
+            jokeTextEl.textContent = joke.setup;
+            punchlineEl.textContent = joke.punchline;
+            
+            // Enable the reveal button
+            revealBtn.disabled = false;
+        }
+        
+        // Event listeners for the joke type buttons
+        dadJokeBtn.addEventListener('click', () => displayJoke('dad'));
+        carJokeBtn.addEventListener('click', () => displayJoke('car'));
+        customJokeBtn.addEventListener('click', () => displayJoke('custom'));
+        
+        // Event listener for the reveal punchline button
+        revealBtn.addEventListener('click', () => {
+            punchlineEl.classList.add('show');
+        });
+        
+        // Event listener for the new joke button
+        newJokeBtn.addEventListener('click', () => {
+            if (currentJokeType) {
+                displayJoke(currentJokeType);
+            } else {
+                // If no joke type has been selected yet, default to car jokes
+                displayJoke('car');
+            }
+        });
+        
+        // Initialize with car jokes being visible
+        displayJoke('car');
+    </script>
+</body>
+</html>

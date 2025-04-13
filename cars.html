@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Car Enthusiasm Page</title>
+    <link rel="stylesheet" href="car-styles.css">
+</head>
+<body>
+    <header>
+        <h1>My Love of Cars</h1>
+        <nav>
+            <ul>
+                <li><a href="#car-data">Car Data</a></li>
+                <li><a href="#car-video">Car Video</a></li>
+                <li><a href="joke-generator.html">Car Jokes</a></li>
+                <li><a href="index.html">Back to Resume</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="car-intro" class="content-section">
+            <h2>Why I Love Cars</h2>
+            <p>Cars have always fascinated me since I was a kid. I fell in love with cars after watching movies like Cars and Fast and Furious. Below is one of my favorite cars, the Nissan GTR R35</p>
+            <img src="https://bulletproofautomotive.com/wp-content/uploads/2019/12/LB-Silhouette-WORKS-GT-NISSAN-35GT-RR02-1.jpeg" alt="Sports car on mountain road" class="car-image">
+        </section>
+
+        <section id="classic-cars" class="content-section">
+            <h2>My favorite car brands</h2>
+            <p>Here are some of my favorite car brands and models:</p>
+            <div class="list-container">
+                <ol>
+                    <li>Lamborghini
+                        <ul>
+                            <li>Lamborghini Huracan</li>
+                            <li>Lamborghini Aventador</li>
+                            <li>Lamborghini Revuelto</li>
+                        </ul>
+                    </li>
+                    <li>Mclaren
+                        <ul>
+                            <li>Mclaren 720s</li>
+                            <li>Mclaren Senna</li>
+                            <li>Mclaren P1</li>
+                        </ul>
+                    </li>
+                    <li>Koenigsegg
+                        <ul>
+                            <li>Koenigsegg Jesko</li>
+                            <li>Koenigsegg Regera</li>
+                            <li>Koenigsegg Gemera</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        </section>
+
+        <!-- Replace the existing Tableau section with this -->
+        <section id="car-data" class="content-section">
+            <h2>Interactive Car Data Visualization</h2>
+            <p>Below is an interactive chart showing car production by manufacturer:</p>
+            <div class="chart-container">
+                <canvas id="carChart" width="800" height="400"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Car production data
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ctx = document.getElementById('carChart').getContext('2d');
+                    const carChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Toyota', 'Volkswagen', 'Ford', 'Honda', 'Chevrolet', 'BMW', 'Mercedes'],
+                            datasets: [{
+                                label: 'Annual Production (millions)',
+                                data: [10.5, 9.3, 5.9, 5.3, 4.8, 2.5, 2.3],
+                                backgroundColor: [
+                                    '#bd5d38', '#495057', '#6c757d', '#adb5bd', '#ced4da', '#dee2e6', '#e9ecef'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Top Car Manufacturers by Production Volume'
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+        </section>
+
+        <section id="car-video" class="content-section">
+            <h2>This is a video of my dream car, the Koenigsegg Jesko</h2>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/93qN5jjNL00?si=w79-McZOg5flaiAT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Car Jokes Generator</h2>
+            <p>Looking for a good laugh? Check out our <a href="joke-generator.html">Car Joke Generator</a>! It features car-related jokes, dad jokes, and some custom jokes that combine cars with programming humor.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Keaten Albiston | Web Development Project</p>
+        <p><a href="#car-intro">Back to Top</a></p>
+    </footer>
+</body>
+</html>
